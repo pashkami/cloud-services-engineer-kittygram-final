@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.9"]
 
     steps:
     - uses: actions/checkout@v3
@@ -122,8 +122,6 @@ jobs:
           sudo touch .env
           sudo chmod 777 .env
           echo SECRET_KEY=${{ secrets.SECRET_KEY }} > .env
-          echo DEBUG=${{ secrets.DEBUG }} >> .env
-          echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> .env
           echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} >> .env
           echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
           echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
@@ -166,4 +164,3 @@ jobs:
         token: ${{ secrets.TELEGRAM_TOKEN }}
         message: |
           Коты в здании!
-          

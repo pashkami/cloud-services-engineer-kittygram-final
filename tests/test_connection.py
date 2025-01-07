@@ -33,6 +33,7 @@ def _get_validated_link(
     )
     return link.rstrip('/')
 
+
 def _make_safe_request(link: str, stream: bool = False) -> requests.Response:
     try:
         response = requests.get(link, stream=stream, timeout=15)
@@ -75,6 +76,7 @@ def test_link_connection(
         assert cats_project_name in response.text, (
             assert_msg_template.format(project_name=cats_project_name)
         )
+
 
 def test_kittygram_static_is_available(
         deploy_file_info: tuple[Path, str],
