@@ -126,8 +126,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             script: |
-              sudo docker system prune -af
               cd ~/kittygram
+              sudo docker system prune -af
               sudo docker compose -f docker-compose.production.yml pull
               sudo docker compose -f docker-compose.production.yml down --remove-orphans
               sudo docker compose -f docker-compose.production.yml up -d
