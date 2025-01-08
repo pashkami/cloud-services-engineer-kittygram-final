@@ -1,2 +1,6 @@
 node_modules
 build
+venv
+.git
+.env
+db.sqlite3
