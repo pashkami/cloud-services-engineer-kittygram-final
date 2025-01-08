@@ -1,47 +1,61 @@
-version: '3'
-
-volumes:
-  pg_data:
-  static:
-  media:
-  frontend_build:
+name: 'kittygram'
 
 services:
-  postgres:
-    image: postgres:13
-    env_file:
-      - .env
+  kittygram_gateway:
+    image: frostfree/kittygram_gateway:latest
+    container_name: gateway
+    ports:
+      - '80:80/tcp'
     restart: always
+    depends_on:
+      - kittygram_backend
+      - kittygram_frontend
+    networks:
+      - kittygram-network
     volumes:
-      - pg_data:/var/lib/postgresql/data/
+      - backend-static:/var/html/backend
+      - media:/var/html/media
+      - frontend-static:/var/html/static
 
-  backend:
-    image: pashkami/kittygram_backend:latest
-    env_file: .env
+  kittygram_backend:
+    image: frostfree/kittygram_backend:latest
+    container_name: backend
     restart: always
+    env_file: .env
+    networks:
+      - kittygram-network
+    volumes:
+      - backend-static:/app/collected_static
+      - media:/app/media
     depends_on:
       - postgres
+    
+  kittygram_frontend:
+    image: frostfree/kittygram_frontend:latest
+    container_name: frontend
+    restart: always
+    networks:
+      - kittygram-network
     volumes:
-      - static:/app/collected_static/
-      - media:/app/media/    
-
-  frontend:
-    image: pashkami/kittygram_frontend:latest
+      - frontend-static:/app/build
+    
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    restart: always
     env_file: .env
-    restart: always
     volumes:
-      - frontend_build:/app/build/
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - kittygram-network
+
+networks:
+  kittygram-network:
+    driver: bridge
   
-  gateway:
-    image: pashkami/kittygram_gateway:latest
-    ports:
-      - "80:80"
-    restart: always
-    volumes:
-      - frontend_build:/usr/share/nginx/html/
-      - static:/var/html/static/
-      - media:/var/html/media/
-    depends_on:
-      - frontend
-      - backend
-      
+volumes:
+  pg_data:
+  backend-static:
+  media:
+  frontend-static:
+  

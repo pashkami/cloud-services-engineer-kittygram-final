@@ -1,7 +1,18 @@
-FROM python:3.9
+FROM python:3.10
+
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE 1
 
 WORKDIR /app
-COPY requirements.txt .
+
+COPY ./requirements.txt ./requirements.txt
+
 RUN pip install -r requirements.txt --no-cache-dir
+
 COPY . .
-CMD ["python", "manage.py", "runserver", "0.0.0.0:9000"]
+
+EXPOSE 8000
+
+RUN chmod +x ./entrypoint.sh
+
+CMD ["./entrypoint.sh"]
