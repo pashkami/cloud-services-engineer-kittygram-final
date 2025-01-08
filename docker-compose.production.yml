@@ -11,7 +11,7 @@ services:
       - pg_data:/var/lib/postgresql/data
 
   backend:
-    image: pashkami/kittygram_backend
+    image: pashkami/backend
     env_file: .env
     depends_on:
       - db
@@ -20,14 +20,14 @@ services:
       - media:/app/media
 
   frontend:
-    image: pashkami/kittygram_frontend
+    image: pashkami/frontend
     env_file: .env
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - static:/frontend_static
 
   gateway:
-    image: pashkami/kittygram_gateway
+    image: pashkami/gateway
     env_file: .env
     depends_on:
       - backend
