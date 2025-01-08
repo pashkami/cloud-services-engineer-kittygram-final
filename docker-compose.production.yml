@@ -2,7 +2,7 @@ name: 'kittygram'
 
 services:
   kittygram_gateway:
-    image: frostfree/kittygram_gateway:latest
+    image: pashkami/kittygram_gateway:latest
     container_name: gateway
     ports:
       - '80:80/tcp'
@@ -18,7 +18,7 @@ services:
       - frontend-static:/var/html/static
 
   kittygram_backend:
-    image: frostfree/kittygram_backend:latest
+    image: pashkami/kittygram_backend:latest
     container_name: backend
     restart: always
     env_file: .env
@@ -31,7 +31,7 @@ services:
       - postgres
     
   kittygram_frontend:
-    image: frostfree/kittygram_frontend:latest
+    image: pashkami/kittygram_frontend:latest
     container_name: frontend
     restart: always
     networks:
