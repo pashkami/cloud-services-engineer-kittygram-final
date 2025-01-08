@@ -116,7 +116,7 @@ jobs:
           username: ${{ secrets.PRODUCTION_USER }}
           key: ${{ secrets.SSH_KEY }}
           source: "docker-compose.production.yml"
-          target: "/kittygram"
+          target: "kittygram"
 
       - name: Pull and restart containers
         uses: appleboy/ssh-action@master
@@ -126,7 +126,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             script: |
-              cd ~/kittygram
+              cd kittygram
               sudo docker system prune -af
               sudo docker compose -f docker-compose.production.yml pull
               sudo docker compose -f docker-compose.production.yml down --remove-orphans
