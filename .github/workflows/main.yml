@@ -2,8 +2,9 @@ name: deployment
 
 on:
   push:
-    branches: [master, main]
-
+    branches:
+      - main
+      
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -124,9 +125,17 @@ jobs:
           username: ${{ secrets.PRODUCTION_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            docker compose -f kittygram/docker-compose.production.yml pull
-            docker compose -f kittygram/docker-compose.production.yml down
-            docker compose -f kittygram/docker-compose.production.yml up -d
+            script: |
+              sudo docker system prune -af
+              sudo npm cache clean --force
+              sudo apt clean
+              sudo journalctl --vacuum-time=1d
+              cd ~/kittygram
+              sudo docker compose -f docker-compose.production.yml pull
+              sudo docker compose -f docker-compose.production.yml down
+              sudo docker compose -f docker-compose.production.yml up -d
+              sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
+              sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic --no-input
 
   auto_tests:
     runs-on: ubuntu-latest
