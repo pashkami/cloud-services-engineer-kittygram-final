@@ -9,16 +9,15 @@ services:
       - backend
       - frontend
     volumes:
-      - backend-static:/var/html/backend
+      - static:/var/html/backend/backend_static
       - media:/var/html/media
-      - frontend-static:/var/html/static
+      - static:/var/html//frontend-static
 
   backend:
     image: pashkami/kittygram_backend:latest
     env_file: .env
-
     volumes:
-      - backend-static:/app/collected_static
+      - static:/app/collected_static
       - media:/app/media
     depends_on:
       - postgres
@@ -26,7 +25,7 @@ services:
   frontend:
     image: pashkami/kittygram_frontend:latest
     volumes:
-      - frontend-static:/app/build
+      - static:/app/build/frontend_static
     
   postgres:
     image: postgres:13
