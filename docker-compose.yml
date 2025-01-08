@@ -1,6 +1,11 @@
 version: "3.8"
 name: kittygram
 
+volumes:
+  static:
+  media:
+  pg_data:
+
 services:
   postgres:
     image: postgres:13.10
@@ -9,24 +14,25 @@ services:
       - pg_data:/var/lib/postgresql/data
 
   backend:
-    image: pashkami/kittygram_backend:latest
+    build: ./backend/
     env_file: .env
-    ports: 
-      - "8000:8000"
+    command: >
+      sh -c "python manage.py migrate &&
+              python manage.py runserver 0.0.0.0:8000"
     volumes:
-      - static:/backend_static
+      - static:/backend
       - media:/backend/media
     depends_on:
       - postgres
 
   frontend:
-    image: pashkami/kittygram_frontend:latest
+    build: ./frontend/
     env_file: .env
     volumes:
       - static:/app/build
 
   gateway:
-    image: pashkami/kittygram_gateway:latest
+    build: ./nginx/
     ports:
       - 80:80
     depends_on:
@@ -36,7 +42,3 @@ services:
       - static:/static
       - media:/media
 
-volumes:
-  static:
-  media:
-  pg_data:

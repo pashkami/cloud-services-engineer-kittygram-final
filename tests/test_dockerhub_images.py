@@ -20,7 +20,7 @@ def test_dockerhub_images_exist(
         deploy_file_info: tuple[Path, str],
         deploy_info_file_content: dict[str, str],
         dockerhub_username_key: str
-        ) -> None:
+) -> None:
     common_part_of_link_to_docker_hub = (
         'https://hub.docker.com/v2/namespaces/{username}/repositories/{image}/'
     )
