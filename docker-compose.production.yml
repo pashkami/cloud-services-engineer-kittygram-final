@@ -6,8 +6,8 @@ services:
     ports:
       - '80:80'
     depends_on:
-      - kittygram_backend
-      - kittygram_frontend
+      - backend
+      - frontend
     volumes:
       - backend-static:/var/html/backend
       - media:/var/html/media
