@@ -5,6 +5,7 @@ services:
   postgres:
     image: postgres:13.10
     environment:
+      - DB_HOST = DB_HOST
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
