@@ -12,4 +12,4 @@ WORKDIR /backend
 COPY --from=build /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
 COPY --from=build /backend /backend
 EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:9000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

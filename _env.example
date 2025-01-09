@@ -1,3 +1,17 @@
-POSTGRES_DB=kittygram
-POSTGRES_USER=kittygram_user
-POSTGRES_PASSWORD=kittygram_password
+# Для Django
+SECRET_KEY=your_django_secret_key
+DB_ENGINE=django.db.backends.postgresql
+POSTGRES_DB=your_database_name
+POSTGRES_USER=your_database_user
+POSTGRES_PASSWORD=your_database_password
+DB_HOST=db
+DB_PORT=5432
+
+# Для Redis (если используется)
+REDIS_HOST=redis
+REDIS_PORT=6379
+REDIS_PASSWORD=your_redis_password
+
+# Для Telegram уведомлений
+TELEGRAM_TOKEN=your_telegram_bot_token
+TELEGRAM_TO=your_telegram_chat_id
