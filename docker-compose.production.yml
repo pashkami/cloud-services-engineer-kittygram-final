@@ -11,8 +11,8 @@ services:
   backend:
     image: pashkami/kittygram_backend:latest
     env_file: .env
-    ports: 
-      - "8000:8000"
+    # ports: 
+    #  - "8000:8000"
     volumes:
       - static:/backend_static
       - media:/backend/media
