@@ -172,6 +172,7 @@ jobs:
             echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> kittygram-app/.env
             echo "DB_HOST=${{ secrets.DB_HOST }}" >> kittygram-app/.env
             echo "DB_PORT=${{ secrets.DB_PORT }}" >> kittygram-app/.env
+            echo "DEBUG=${{ secrets.DEBUG }}" >> kittygram-app/.env
 
       - name: Executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
@@ -192,8 +193,9 @@ jobs:
             sudo docker compose -f docker-compose.production.yml up -d
             # Выполняет миграции и сбор статики
             sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
-            sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
-            sudo docker compose -f docker-compose.production.yml exec backend cp -r /backend/collected_static/. /backend_static/static/
+            sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic --no-input
+            
+#            sudo docker compose -f docker-compose.production.yml exec backend cp -r /backend/collected_static/. /backend_static/static/
 
   auto_tests:
     runs-on: ubuntu-latest
