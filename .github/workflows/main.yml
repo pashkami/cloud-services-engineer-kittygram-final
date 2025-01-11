@@ -231,4 +231,9 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: Коты в здании!
+          message: |
+            Деплой завершён!
+            Коты в здании!
+            - Автор: ${{ github.actor }}
+            - Коммит: ${{ github.event.commits[0].message }}
+            - [Ссылка на коммит](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
