@@ -75,6 +75,7 @@ jobs:
           echo "SERVER_HOST=${OUTPUT}" >> $env:GITHUB_ENV
 
       - name: Save IP to S3
+        if: ${{ github.event.inputs.action == 'apply' }}
         run: |
           terraform output -raw vm_ip > vm_ip.txt
           aws s3 cp vm_ip.txt s3://my-kittygram-bucket/vm_ip.txt
