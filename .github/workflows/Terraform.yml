@@ -71,10 +71,8 @@ jobs:
       - name: Terraform Outputs
         if: ${{ github.event.inputs.action == 'apply' && success() }}
         run: |
-          echo "vm_public_ip"
-          IP=$(terraform output 'vm_public_ip')
-          echo "VM_IP=${IP}"
-          echo "SERVER_HOST=${IP}" >> $GITHUB_ENV
+          OUTPUT=$(terraform output -raw vm_public_ip)
+          echo "SERVER_HOST=${OUTPUT}" >> $GITHUB_ENV
 
       - name: Terraform Destroy
         working-directory: ./infra
