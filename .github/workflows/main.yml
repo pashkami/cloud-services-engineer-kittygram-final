@@ -146,7 +146,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: vm-ip
-          search_artifacts: true
+          path: ${{ github.workspace }}/infra/vm_ip.txt
 
       - name: Read VM IP
         id: read-ip
