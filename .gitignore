@@ -3,5 +3,4 @@ venv
 .env
 *.sqlite3
 *.pyc
-*meta.txt
 .DS_Store
