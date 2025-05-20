@@ -142,6 +142,18 @@ jobs:
       - build_frontend_and_push_to_docker_hub
       - build_gateway_and_push_to_docker_hub
     steps:
+      - name: Download VM IP
+        uses: actions/download-artifact@v4
+        with:
+          name: vm-ip
+
+      - name: Read VM IP
+        id: read-ip
+        run: |
+          VM_IP=$(cat vm_ip.txt)
+          echo "VM_IP=${VM_IP}" >> $GITHUB_ENV
+          echo "IP адрес виртуальной машины: ${VM_IP}"
+
       - name: Checkout repo
         uses: actions/checkout@v3
       # Копируем docker-compose.production.yml на продакшен-сервер:
@@ -149,7 +161,7 @@ jobs:
         uses: appleboy/scp-action@master
         # Передаём параметры для action appleboy/scp-action:
         with:
-          host: ${{ secrets.SERVER_HOST }}
+          host: ${{ env.VM_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
@@ -160,7 +172,7 @@ jobs:
       - name: Create .env file via ssh
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SERVER_HOST }}
+          host: ${{ env.VM_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
@@ -177,7 +189,7 @@ jobs:
       - name: Executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SERVER_HOST }}
+          host: ${{ env.VM_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
