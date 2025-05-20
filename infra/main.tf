@@ -43,28 +43,28 @@ resource "yandex_vpc_subnet" "subnet-1" {
 
 # 2. Группа безопасности
 resource "yandex_vpc_security_group" "kittygram_sg" {
-  name        = "kittygram-security-group"
-  network_id  = yandex_vpc_network.network-1.id
+  name       = "kittygram-security-group"
+  network_id = yandex_vpc_network.network-1.id
 
   ingress {
-    protocol    = "TCP"
-    port        = 22
-    description = "SSH access"
-    cidr_blocks = ["0.0.0.0/0"]
+    protocol       = "TCP"
+    port           = 22
+    description    = "SSH access"
+    v4_cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
-    protocol    = "TCP"
-    port        = 80
-    description = "HTTP access"
-    cidr_blocks = ["0.0.0.0/0"]
+    protocol       = "TCP"
+    port           = 8000
+    description    = "HTTP Gateway service"
+    v4_cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    protocol    = "ANY"
-    from_port   = 0
-    to_port     = 8000
-    cidr_blocks = ["0.0.0.0/0"]
+    protocol       = "ANY"
+    from_port      = 0
+    to_port        = 65535
+    v4_cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
@@ -91,8 +91,8 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.subnet-1.id
-    nat       = true
+    subnet_id          = yandex_vpc_subnet.subnet-1.id
+    nat                = true
     security_group_ids = [yandex_vpc_security_group.kittygram_sg.id]
   }
 
