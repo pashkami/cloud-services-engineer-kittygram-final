@@ -75,6 +75,7 @@ jobs:
           echo "SERVER_HOST=${OUTPUT}" >> $env:GITHUB_ENV
 
       - name: Save IP to S3
+        working-directory: ./infra
         if: ${{ github.event.inputs.action == 'apply' }}
         run: |
           terraform output -raw vm_ip > vm_ip.txt
