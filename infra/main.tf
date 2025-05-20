@@ -7,16 +7,13 @@ terraform {
   required_version = ">= 0.13" // версия, совместимая с провайдером версия Terraform
 
   backend "s3" {
-    endpoints = {
-      s3 = "https://storage.yandexcloud.net"
-    }
-    bucket                      = "my-kittygram-bucket"
-    region                      = "ru-central1"
-    key                         = "tf-state.tfstate"
+    endpoint   = "storage.yandexcloud.net"  
+    bucket     = "my-kittygram-bucket"
+    key        = "terraform.tfstate"
+    region     = "ru-central1"
     skip_region_validation      = true
     skip_credentials_validation = true
     skip_requesting_account_id  = true
-    skip_s3_checksum            = true
   }
 }
 
