@@ -29,6 +29,11 @@ data "yandex_lockbox_secret" "ssh_key" {
   name = "ssh-private-key"
 }
 
+resource "local_file" "private_key" {
+  filename = "id_rsa"
+  content  = data.yandex_lockbox_secret.ssh_key.entries[0].text_value
+}
+
 # Настройка сети и машины
 resource "yandex_vpc_network" "network-1" {
   name = "kittygram-network"
