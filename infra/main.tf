@@ -7,10 +7,10 @@ terraform {
   required_version = ">= 0.13" // версия, совместимая с провайдером версия Terraform
 
   backend "s3" {
-    endpoint   = "storage.yandexcloud.net"  
-    bucket     = "my-kittygram-bucket"
-    key        = "terraform.tfstate"
-    region     = "ru-central1"
+    endpoint                    = "storage.yandexcloud.net"
+    bucket                      = "my-kittygram-bucket"
+    key                         = "terraform.tfstate"
+    region                      = "ru-central1"
     skip_region_validation      = true
     skip_credentials_validation = true
     skip_requesting_account_id  = true
@@ -27,11 +27,6 @@ provider "yandex" {
 # Получаем секрет из Lockbox
 data "yandex_lockbox_secret" "ssh_key" {
   name = "ssh-private-key"
-}
-
-resource "local_file" "private_key" {
-  filename = "id_rsa"
-  content  = data.yandex_lockbox_secret.ssh_key.entries[0].text_value
 }
 
 # Настройка сети и машины
