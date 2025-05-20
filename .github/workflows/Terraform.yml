@@ -72,7 +72,7 @@ jobs:
         if: ${{ github.event.inputs.action == 'apply' && success() }}
         run: |
           OUTPUT=$(terraform output -raw vm_ip)
-          echo "SERVER_HOST=${OUTPUT}" >> $GITHUB_ENV
+          echo "SERVER_HOST=${OUTPUT}" >> $env:GITHUB_ENV
 
       - name: Terraform Destroy
         working-directory: ./infra
