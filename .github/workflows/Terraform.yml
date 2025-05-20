@@ -74,13 +74,20 @@ jobs:
           OUTPUT=$(terraform output -raw vm_ip)
           echo "SERVER_HOST=${OUTPUT}" >> $env:GITHUB_ENV
 
-      - name: Save IP to S3
+      - name: Save VM IP to Artifact
+        if: ${{ github.event.inputs.action == 'apply' && success() }}
         working-directory: ./infra
-        if: ${{ github.event.inputs.action == 'apply' }}
         run: |
           terraform output -raw vm_ip > vm_ip.txt
-          aws s3 cp vm_ip.txt s3://my-kittygram-bucket/vm_ip.txt
-          echo "IP сохранен в S3"
+        shell: bash
+
+      - name: Upload VM IP Artifact
+        if: ${{ github.event.inputs.action == 'apply' && success() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vm-ip_artifact
+          path: ${{ github.workspace }}/infra/vm_ip.txt
+          retention-days: 1
 
       - name: Terraform Destroy
         working-directory: ./infra
