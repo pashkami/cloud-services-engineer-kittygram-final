@@ -41,10 +41,37 @@ resource "yandex_vpc_subnet" "subnet-1" {
   v4_cidr_blocks = ["192.168.10.0/24"]
 }
 
+# 2. Группа безопасности
+resource "yandex_vpc_security_group" "kittygram_sg" {
+  name        = "kittygram-security-group"
+  network_id  = yandex_vpc_network.network-1.id
+
+  ingress {
+    protocol    = "TCP"
+    port        = 22
+    description = "SSH access"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    protocol    = "TCP"
+    port        = 80
+    description = "HTTP access"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    protocol    = "ANY"
+    from_port   = 0
+    to_port     = 8000
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "yandex_compute_disk" "boot-disk-1" {
   name     = "boot-disk-1"
   type     = "network-hdd"
-  zone     = "ru-central1-d"
+  zone     = var.yc_zone
   size     = "20"
   image_id = "fd80tpcdvop5e9qcosnq"
 }
@@ -66,6 +93,7 @@ resource "yandex_compute_instance" "vm-1" {
   network_interface {
     subnet_id = yandex_vpc_subnet.subnet-1.id
     nat       = true
+    security_group_ids = [yandex_vpc_security_group.kittygram_sg.id]
   }
 
   metadata = {

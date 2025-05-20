@@ -67,23 +67,12 @@ jobs:
         if: ${{ github.event.inputs.action == 'apply' }}
         run: |
           terraform apply -input=false -auto-approve
-          echo "VM_IP=$(terraform output -raw vm_ip)" >> $GITHUB_ENV
-
-      - name: Upload Terraform State
-        if: ${{ github.event.inputs.action == 'apply' && success() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: terraform-state
-          path: |
-            ${{ github.workspace }}/infra/.terraform.lock.hcl
-            ${{ github.workspace }}/infra/terraform.tfstate
-          retention-days: 1
-          if-no-files-found: ignore
 
       - name: Terraform Outputs
         if: ${{ github.event.inputs.action == 'apply' && success() }}
         run: |
           echo "VM IP: ${{ env.VM_IP }}"
+          echo "SERVER_HOST=$(terraform output -raw vm_public_ip)" >> $GITHUB_ENV
 
       - name: Terraform Destroy
         working-directory: ./infra

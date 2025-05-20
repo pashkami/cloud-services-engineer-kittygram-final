@@ -1,6 +1,6 @@
 #cloud-config
 users:
-  - name: ubuntu
+  - name: ${{ secrets.SERVER_USER }}
     groups: sudo
     passwd: "$6$rounds=4096$tI8bPFOr10PAlly6$si.sDu9lLUZck0e0MvblwosVDruy7fUoNPZPqjSNaZywtENF4Z1mOjAxKSxDruhjulS5bM8rpbi0PkOsOWXgO1"
     sudo: 'ALL=(ALL) NOPASSWD:ALL'
