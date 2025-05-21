@@ -4,6 +4,12 @@ variable "yc_token" {
   sensitive   = true
 }
 
+variable "yc_service_account_key" {
+  description = "Содержимое JSON-ключа сервисного аккаунта Yandex.Cloud"
+  type        = string
+  sensitive   = true
+}
+
 variable "yc_cloud_id" {
   type        = string
   description = "ID облака (из GitHub Secrets)"
@@ -36,6 +42,6 @@ variable "yc_zone" {
 }
 
 variable "new_user" {
-  type        = string
+  type    = string
   default = "meta.txt"
 }
