@@ -103,6 +103,15 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   metadata = {
-    user-data = file(var.new_user)
+    user-data = <<-EOT
+      #cloud-config
+      users:
+        - name: devuser
+          groups: sudo
+          shell: /bin/bash
+          sudo: ['ALL=(ALL) NOPASSWD:ALL']
+          ssh-authorized-keys:
+            - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDV5cOgEYC3HjCIlLcKUWihpgUPRtO/3CrrmX/aR5S5TmMTo3zg2wSLBqDc4BifagodwOZ7s/xx8LzzAo7N/kVoaNkPjl40R90wa0KIy/1eMHFA2QoUJ+M0URCAjEX8LO1ERhcY/Rha+tvi1tE8lG8azTSuQezUO1LppQkE1hAYQR1WQxtfNsdvVZ6WWjOZCjXY8QOZhOkVLM63Ub9IfQS7hS0A3fiE3+pfXPNcvLS9GUPawjjJnytBZtBnDRds9gg+S6VqKG5+FJEAtErihRP7zrcXcDXglCXlhwWb8ajHniLBXEVd8dgyKC84tO7HkO+N6dQqnGrxVk6Ghp+5344UUcrKJAvHD665PFvXJi22TmMpDi2btoYZ9KYUTs74CMfss7vF52UO62sLIzhteg4vV2kJ9e8emYwINgYkTUrwvaqza0r1FJ91IUbXPSsRWQ6r2XoxmDXhjlNZg88LRqSKayhEkMocI8nHfRS9c6bFwQfPpLRcf+z3s/oahcqV6RE= pavel@DESKTOP-ETC1P4P
+      EOT
   }
 }
