@@ -290,7 +290,7 @@ jobs:
         uses: appleboy/ssh-action@v0.1.5
         with:
           host: ${{ env.VM_IP }}
-          username: ubuntu
+          username: devuser
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           script: |
             if ! command -v docker &> /dev/null; then
