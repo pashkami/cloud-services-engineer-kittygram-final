@@ -4,7 +4,7 @@ datasource:
     strict_id: false
 ssh_pwauth: no
 users:
-  - name: ${{ secrets.SERVER_USER }}
+  - name: server
     groups: sudo
     shell: /bin/bash
     ssh_authorized_keys:
