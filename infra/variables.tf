@@ -4,11 +4,11 @@ variable "yc_token" {
   sensitive   = true
 }
 
-variable "yc_service_account_key" {
-  description = "Содержимое JSON-ключа сервисного аккаунта Yandex.Cloud"
-  type        = string
-  sensitive   = true
-}
+# variable "yc_service_account_key" {
+#   description = "Содержимое JSON-ключа сервисного аккаунта Yandex.Cloud"
+#   type        = string
+#   sensitive   = true
+# }
 
 variable "yc_cloud_id" {
   type        = string
