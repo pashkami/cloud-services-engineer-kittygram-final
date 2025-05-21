@@ -17,8 +17,13 @@ terraform {
   }
 }
 
+resource "local_file" "yc_key" {
+  content  = var.yc_service_account_key
+  filename = "${path.module}/sa-key-temp.json"
+}
+
 provider "yandex" {
-  service_account_key_file = var.yc_service_account_key  
+  service_account_key_file = "${path.module}/sa-key-temp.json"
   # token     = var.yc_token
   cloud_id  = var.yc_cloud_id
   folder_id = var.yc_folder_id
