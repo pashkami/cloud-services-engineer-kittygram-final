@@ -71,20 +71,20 @@ jobs:
           terraform apply -input=false -auto-approve
 
       - name: Terraform Outputs
-        if: ${{ github.event.inputs.action == 'apply' && success() }}
+        if: ${{ github.event.inputs.action == 'apply' && success() || 'deploy'  }}
         run: |
           OUTPUT=$(terraform output -raw vm_ip)
           echo "SERVER_HOST=${OUTPUT}" >> $env:GITHUB_ENV
 
       - name: Save VM IP to Artifact
-        if: ${{ github.event.inputs.action == 'apply' && success() }}
+        if: ${{ github.event.inputs.action == 'apply' && success() || 'deploy'  }}
         working-directory: ./infra
         run: |
           terraform output -raw vm_ip > vm_ip.txt
         shell: bash
 
       - name: Upload VM IP Artifact
-        if: ${{ github.event.inputs.action == 'apply' && success() }}
+        if: ${{ github.event.inputs.action == 'apply' && success() || 'deploy' }}
         uses: actions/upload-artifact@v4
         with:
           name: vm-ip_artifact
