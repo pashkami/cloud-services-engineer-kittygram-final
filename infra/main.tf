@@ -30,10 +30,10 @@ provider "yandex" {
   zone      = var.yc_zone
 }
 
-# Получаем секрет из Lockbox
-data "yandex_lockbox_secret" "ssh_key" {
-  name = "ssh-private-key"
-}
+# # Получаем секрет из Lockbox
+# data "yandex_lockbox_secret" "ssh_key" {
+#   name = "ssh-private-key"
+# }
 
 # Настройка сети и машины
 resource "yandex_vpc_network" "network-1" {
@@ -97,8 +97,8 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   network_interface {
-    subnet_id          = yandex_vpc_subnet.subnet-1.id
-    nat                = true
+    subnet_id = yandex_vpc_subnet.subnet-1.id
+    nat       = true
     # security_group_ids = [yandex_vpc_security_group.kittygram_sg.id]
   }
 
@@ -112,6 +112,24 @@ resource "yandex_compute_instance" "vm-1" {
           sudo: ['ALL=(ALL) NOPASSWD:ALL']
           ssh-authorized-keys:
             - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDV5cOgEYC3HjCIlLcKUWihpgUPRtO/3CrrmX/aR5S5TmMTo3zg2wSLBqDc4BifagodwOZ7s/xx8LzzAo7N/kVoaNkPjl40R90wa0KIy/1eMHFA2QoUJ+M0URCAjEX8LO1ERhcY/Rha+tvi1tE8lG8azTSuQezUO1LppQkE1hAYQR1WQxtfNsdvVZ6WWjOZCjXY8QOZhOkVLM63Ub9IfQS7hS0A3fiE3+pfXPNcvLS9GUPawjjJnytBZtBnDRds9gg+S6VqKG5+FJEAtErihRP7zrcXcDXglCXlhwWb8ajHniLBXEVd8dgyKC84tO7HkO+N6dQqnGrxVk6Ghp+5344UUcrKJAvHD665PFvXJi22TmMpDi2btoYZ9KYUTs74CMfss7vF52UO62sLIzhteg4vV2kJ9e8emYwINgYkTUrwvaqza0r1FJ91IUbXPSsRWQ6r2XoxmDXhjlNZg88LRqSKayhEkMocI8nHfRS9c6bFwQfPpLRcf+z3s/oahcqV6RE= pavel@DESKTOP-ETC1P4P
+      
+      packages:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+
+      runcmd:
+        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+        - echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        - sudo apt-get update -y
+        - sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+        - sudo usermod -aG docker devuser  # Добавляем пользователя в группу docker
+        - sudo systemctl enable docker
+
+      # Установка Docker Compose
+        - sudo curl -L "https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        - sudo chmod +x /usr/local/bin/docker-compose
       EOT
   }
 }
