@@ -245,7 +245,7 @@ jobs:
       - name: Download VM IP
         uses: actions/download-artifact@v4
         with:
-          name: vm-ip
+          name: vm-ip_artifact
           
       - name: Read VM IP
         id: read-ip
